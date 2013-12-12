@@ -6,8 +6,12 @@ public class Player : MonoBehaviour
 
 	private int _score = 0;
 	private int _startingScore = 0;
-	private int _startingLives = 1;
+	private int _startingLives = 3;
 	private int _lives = 0;
+
+
+	private int _nextLife = 10000;
+	private int _currentLevel = 0;
 
 
 	void OnEnable()
@@ -16,6 +20,7 @@ public class Player : MonoBehaviour
 		Messenger.AddListener(EventDictionary.Instance.onPlayerKilled(), OnPlayerKilled);
 		//Messenger.AddListener(EventDictionary.Instance.onPlaying(), OnPlaying);
 		Messenger.AddListener(EventDictionary.Instance.onGameReset(), OnReset);
+		Messenger.AddListener(EventDictionary.Instance.onLevelStarted(), OnLevelStarted);
 
 
 	}
@@ -23,11 +28,12 @@ public class Player : MonoBehaviour
 	void OnPelletEaten()
 	{
 
-		_score += 20;
+		_score += 150;
 		Messenger.Broadcast<int>(EventDictionary.Instance.onScoreChanged(), _score);
 
-		if(_score % 1000 == 0)//if the score can be evenly divided by 1000 you gain a life 
+		if(_score >= _nextLife)
 		{
+			_nextLife += 10000;
 			//add a life
 			_lives++;
 			Messenger.Broadcast<int>(EventDictionary.Instance.onLivesChanged(), _lives);//calls the GUI
@@ -56,10 +62,20 @@ public class Player : MonoBehaviour
 	{
 		_lives = _startingLives;
 		_score = _startingScore;
+		_nextLife = 10000;
+		_currentLevel = 0;
 
 		Messenger.Broadcast<int>(EventDictionary.Instance.onScoreChanged(), _score);
 		Messenger.Broadcast<int>(EventDictionary.Instance.onLivesChanged(), _lives);
+		Messenger.Broadcast<int>(EventDictionary.Instance.onLevelChanged(), _currentLevel);
 
+	}
+
+	void OnLevelStarted()
+	{
+
+		_currentLevel++;
+		Messenger.Broadcast<int>(EventDictionary.Instance.onLevelChanged(), _currentLevel);
 	}
 
 	// Use this for initialization

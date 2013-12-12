@@ -20,6 +20,7 @@ public class PelletArray : MonoBehaviour
 	{
 
 		Messenger.AddListener(EventDictionary.Instance.onGameReset(), OnReset);
+		Messenger.AddListener(EventDictionary.Instance.onLevelReset(), OnReset);
 
 	}
 
@@ -66,11 +67,12 @@ public class PelletArray : MonoBehaviour
 	{
 		_currentPellets = gameObject.GetComponentsInChildren<Transform>();
 		
-		if(_currentPellets.Length <= 1)
+		if(_currentPellets.Length <= 1)//if the map is cleared of pellets
 		{
-			Debug.Log("Winner!");
+			//Debug.Log("Winner!");
 			
 			mapState = MapStates.Idle;
+			Messenger.Broadcast(EventDictionary.Instance.onMapClear());
 		}
 
 

@@ -23,6 +23,7 @@ public class InputSystem : MonoBehaviour
 	{
 		Messenger.AddListener(EventDictionary.Instance.onPlaying(), OnPlaying);
 		Messenger.AddListener(EventDictionary.Instance.onGameOver(), OnGameOver);
+		Messenger.AddListener(EventDictionary.Instance.onLevelEnding(), OnLevelEnding);
 
 	}
 
@@ -37,6 +38,11 @@ public class InputSystem : MonoBehaviour
 	{
 		InputStates = States.Idle;
 
+	}
+
+	void OnLevelEnding()
+	{
+		InputStates = States.Idle;
 	}
 
 	// Update is called once per frame

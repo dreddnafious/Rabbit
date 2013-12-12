@@ -9,6 +9,7 @@ public class SoundSystem : MonoBehaviour
 	public AudioClip sound_wolfSpawned;
 	public AudioClip sound_playerDead;
 	public AudioClip sound_LifeUp;
+	public AudioClip sound_LevelCleared;
 
 	
 	void OnEnable()
@@ -19,6 +20,8 @@ public class SoundSystem : MonoBehaviour
 		Messenger.AddListener(EventDictionary.Instance.onWolfSpawned(), OnWolfSpawned);
 		Messenger.AddListener(EventDictionary.Instance.onPlayerKilled(), OnPlayerKilled);
 		Messenger.AddListener(EventDictionary.Instance.onLifeGained(), OnLifeGained);
+		Messenger.AddListener(EventDictionary.Instance.onLevelEnding(), OnLevelEnding);
+
 	}
 	
 	
@@ -54,6 +57,11 @@ public class SoundSystem : MonoBehaviour
 	void OnLifeGained()
 	{
 		audio.PlayOneShot(sound_LifeUp);
+	}
+
+	void OnLevelEnding()
+	{
+		audio.PlayOneShot(sound_LevelCleared);
 	}
 	
 	/*

@@ -54,6 +54,7 @@
      <Compile Include="Assets\prefabs\scripts\Systems\GameSystem.cs" />
      <Compile Include="Assets\prefabs\scripts\Systems\HUDSystem.cs" />
      <Compile Include="Assets\prefabs\scripts\Systems\InputSystem.cs" />
+     <Compile Include="Assets\prefabs\scripts\Systems\MusicSystem.cs" />
      <Compile Include="Assets\prefabs\scripts\Systems\SoundSystem.cs" />
      <Compile Include="Assets\prefabs\scripts\Utilities\Callback.cs" />
      <Compile Include="Assets\prefabs\scripts\Utilities\Messenger.cs" />

@@ -107,6 +107,21 @@ public class EventDictionary : MonoBehaviour
 		return "OnGameOverMenuDone";
 	}
 
+	public string onLevelClearedScreenDone()
+	{
+		return "OnLevelClearedScreenDone";
+	}
+
+	public string onLevelStartScreenDone()
+	{
+		return "OnLevelStartScreenDone";
+	}
+
+	public string onLevelChanged()
+	{
+		return "OnLevelChanged";
+	}
+
 	public string onGameReset()
 	{
 		return "OnResetGame";
@@ -115,6 +130,11 @@ public class EventDictionary : MonoBehaviour
 	public string onMapClear()
 	{
 		return "OnMapClear";
+	}
+
+	public string onLevelReset()
+	{
+		return "OnLevelReset";
 	}
 
 	#endregion

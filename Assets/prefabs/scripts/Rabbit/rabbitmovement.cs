@@ -64,6 +64,8 @@ public class rabbitmovement : MonoBehaviour
 
 		Messenger.AddListener(EventDictionary.Instance.onPlayerKilled(), OnPlayerKilled);
 		Messenger.AddListener(EventDictionary.Instance.onGameReset(), OnGameReset);
+		Messenger.AddListener(EventDictionary.Instance.onLevelReset(), OnLevelReset);
+		Messenger.AddListener(EventDictionary.Instance.onLevelEnding(), OnLevelEnding);
 	}
 
 	void OnMoveUp()
@@ -108,6 +110,18 @@ public class rabbitmovement : MonoBehaviour
 	void OnGameReset()
 	{
 		myTransform.position = _respawn.transform.position;
+
+	}
+
+	void OnLevelReset()
+	{
+		myTransform.position = _respawn.transform.position;
+	}
+
+	void OnLevelEnding()
+	{
+		_moveVector.x = 0.0f;
+		_moveVector.y = 0.0f;
 
 	}
 	

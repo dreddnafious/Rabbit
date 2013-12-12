@@ -8,7 +8,7 @@ public class wolfcollision : MonoBehaviour
 	void OnEnable()
 	{
 		Messenger.AddListener(EventDictionary.Instance.onPlayerKilled(), OnPlayerKilled);
-
+		Messenger.AddListener(EventDictionary.Instance.onLevelEnding(), OnLevelEnding);
 
 
 	}
@@ -28,7 +28,21 @@ public class wolfcollision : MonoBehaviour
 	void OnPlayerKilled()
 	{
 
+		CleanUp();
+
+	}
+
+	void OnLevelEnding()
+	{
+		CleanUp();
+
+	}
+
+
+	void CleanUp()
+	{
 		Messenger.RemoveListener(EventDictionary.Instance.onPlayerKilled(), OnPlayerKilled);
+		Messenger.RemoveListener(EventDictionary.Instance.onLevelEnding(), OnLevelEnding);
 		Destroy(gameObject);
 
 	}

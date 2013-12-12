@@ -34,6 +34,8 @@ public class WolfDen : MonoBehaviour
 	{
 		Messenger.AddListener(EventDictionary.Instance.onPlaying(), OnPlaying);
 		Messenger.AddListener(EventDictionary.Instance.onGameOver(), OnGameOver);
+		Messenger.AddListener(EventDictionary.Instance.onLevelEnding(), OnLevelEnding);
+		Messenger.AddListener(EventDictionary.Instance.onPlayerKilled(), OnPlayerKilled);
 	}
 
 	// Use this for initialization
@@ -56,6 +58,14 @@ public class WolfDen : MonoBehaviour
 		wolfDenStates = DenStates.Idle;
 		_spawnRate = _resetSpawnRate;
 		_timeElapsed = 0.0f;
+	}
+
+	void OnLevelEnding()
+	{
+		wolfDenStates = DenStates.Idle;
+		_spawnRate = _resetSpawnRate;
+		_timeElapsed = 0.0f;
+
 	}
 	
 	// Update is called once per frame
@@ -89,6 +99,15 @@ public class WolfDen : MonoBehaviour
 			//Instantiate(ChaseWolf, myTransform, Quaternion.identity) as GameObject;
 			
 		}
+
+
+	}
+
+
+	void OnPlayerKilled()
+	{
+		_spawnRate = _resetSpawnRate;
+		_timeElapsed = _spawnRate;
 
 
 	}
