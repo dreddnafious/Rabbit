@@ -8,6 +8,7 @@ public class rabbitmovement : MonoBehaviour
 	Rigidbody myRigidBody;
 
 	float _movementSpeed = 3.5f;
+	float _poweredUpMovementSpeed = 5.25f;
 	float _timePassed = 0.0f;
 
 	Vector3 _moveVector;
@@ -26,6 +27,16 @@ public class rabbitmovement : MonoBehaviour
 	//Vector3 diagonalUpRight;
 	//Vector3 diagonalDownLeft;
 	//Vector3 diagonalDownRight;
+
+
+	private enum RabbitStates
+	{
+		Normal,
+		PoweredUp,
+
+	};
+
+	RabbitStates _rabbitState = RabbitStates.Normal;
 
 	// Use this for initialization
 	void Start ()
@@ -66,6 +77,23 @@ public class rabbitmovement : MonoBehaviour
 		Messenger.AddListener(EventDictionary.Instance.onGameReset(), OnGameReset);
 		Messenger.AddListener(EventDictionary.Instance.onLevelReset(), OnLevelReset);
 		Messenger.AddListener(EventDictionary.Instance.onLevelEnding(), OnLevelEnding);
+
+
+		Messenger.AddListener(EventDictionary.Instance.onCarrotEaten(), OnCarrotEaten);
+		Messenger.AddListener(EventDictionary.Instance.onPowerUpDone(), OnPowerUpDone);
+
+	}
+
+
+	void OnCarrotEaten()
+	{
+		_rabbitState = RabbitStates.PoweredUp;
+
+	}
+
+	void OnPowerUpDone()
+	{
+		_rabbitState = RabbitStates.Normal;
 	}
 
 	void OnMoveUp()
@@ -129,10 +157,47 @@ public class rabbitmovement : MonoBehaviour
 	void Update ()
 	{
 
+		switch(_rabbitState)
+		{
+		case RabbitStates.Normal:
+			NormalSpeed();
+			break;
+		case RabbitStates.PoweredUp:
+			PoweredUpSpeed();
+			break;
+		}
+
+		//_timePassed = Time.deltaTime * _movementSpeed;
 
 
+		DontBounceOffWalls();
+	
+
+
+		_lastPositionVector = myTransform.position;
+		myTransform.Translate(_moveVector);
+		verticalInput = false;
+		horizontalInput = false;
+
+
+	}
+
+
+	void NormalSpeed()
+	{
+		//Debug.Log("normal speed called");
 		_timePassed = Time.deltaTime * _movementSpeed;
+	}
 
+	void PoweredUpSpeed()
+	{
+		_timePassed = Time.deltaTime * _poweredUpMovementSpeed;
+	}
+
+	//because you run in the last direction pressed
+	//this stops your movement in that direction when you hit a wall
+	void DontBounceOffWalls()
+	{
 		if(Mathf.Abs((myRigidBody.position.x - _lastPositionVector.x)) < _deltaMovement &&
 		   horizontalInput == false)
 		{//we're bouncing off a wall in this direction without input
@@ -149,19 +214,8 @@ public class rabbitmovement : MonoBehaviour
 			
 		}
 
-	
-		//RayCasting();
-
-		_lastPositionVector = myTransform.position;
-		myTransform.Translate(_moveVector);
-		verticalInput = false;
-		horizontalInput = false;
-
 
 	}
-
-
-
 
 
 	/// <summary>

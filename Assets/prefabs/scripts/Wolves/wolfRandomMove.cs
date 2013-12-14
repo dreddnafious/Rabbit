@@ -18,6 +18,37 @@ public class wolfRandomMove : MonoBehaviour
 
 	private float timer = 0.0f;
 	private float hertz = 1.0f;
+
+	private float _moveSpeed = 3.0f;
+
+
+	void OnEnable()
+	{
+		Messenger.AddListener(EventDictionary.Instance.onCarrotEaten(), OnCarrotEaten);
+		Messenger.AddListener(EventDictionary.Instance.onPowerUpDone(), OnPowerUpDone);
+		//Messenger.AddListener(EventDictionary.Instance.onWolfCleanUp(), CleanUp);
+	}
+
+	void OnCarrotEaten()
+	{
+		_moveSpeed = 1.0f;
+		navAgent.speed = _moveSpeed;
+	}
+
+	void OnPowerUpDone()
+	{
+		_moveSpeed = 3.0f;
+		navAgent.speed = _moveSpeed;
+	}
+
+	public void CleanUp()
+	{
+		Debug.Log("AI cleanup called");
+		Messenger.RemoveListener(EventDictionary.Instance.onCarrotEaten(), OnCarrotEaten);
+		Messenger.RemoveListener(EventDictionary.Instance.onPowerUpDone(), OnPowerUpDone);
+		//Messenger.RemoveListener(EventDictionary.Instance.onWolfCleanUp(), CleanUp);
+
+	}
 	
 	// Use this for initialization
 	void Start ()
@@ -25,6 +56,8 @@ public class wolfRandomMove : MonoBehaviour
 		navAgent = GetComponent<NavMeshAgent>();
 		randomLocations = GameObject.FindGameObjectsWithTag("random");//build an array of random locations
 		_numofLocations = randomLocations.Length;
+
+		navAgent.speed = _moveSpeed;
 	}
 	
 	// Update is called once per frame

@@ -185,7 +185,7 @@ public class HUDSystem : MonoBehaviour
 		if(GUI.Button(new Rect((Screen.width/2) - 70,(Screen.height/2) -40,100,50), "Start"))
 		{
 			//button was clicked
-			Debug.Log("start menu button was clicked");
+			//Debug.Log("start menu button was clicked");
 			Messenger.Broadcast(EventDictionary.Instance.onStartClicked());
 
 

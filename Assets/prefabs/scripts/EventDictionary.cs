@@ -39,6 +39,26 @@ public class EventDictionary : MonoBehaviour
 		return "OnPelletEaten";
 	}
 
+	public string onCarrotEaten()
+	{
+		return "OnCarrotEaten";
+	}
+
+	public string onPowerUpDone()
+	{
+		return "OnPowerUpDone";
+	}
+
+	public string onWolfKilled()
+	{
+		return "OnWolfKilled";
+	}
+
+	public string onWolfCleanUp()
+	{
+		return "OnWolfCleanUp";
+	}
+
 	public string onWolfSpawned()
 	{
 		return "OnWolfSpawned";
