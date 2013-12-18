@@ -9,7 +9,8 @@ using System.Collections;
 
 public class WolfDen : MonoBehaviour
 {
-	public GameObject ChaseWolf;
+	public GameObject Random_ChaseWolf;
+	public GameObject Direct_ChaseWolf;
 	private Transform myTransform;
 	private Transform wolfSpawnTransform;
 
@@ -17,11 +18,14 @@ public class WolfDen : MonoBehaviour
 
 
 	private float _timeElapsed = 0f;
-	private float _spawnRate = 3.0f;
-	private float _resetSpawnRate = 3.0f;
-	private float _addToSpawnRate = 2.0f;
-	private float _maxTimeBetweenSpawns = 9.0f;
+	private float _spawnRate;
+	private int _addToSpawnRate = 3;
 
+
+
+
+	private int _maxWolvesSpawnedAtOnce = 0;
+	private int _currentWolvesSpawned = 0;
 
 	private enum DenStates
 	{
@@ -41,7 +45,34 @@ public class WolfDen : MonoBehaviour
 		Messenger.AddListener(EventDictionary.Instance.onCarrotEaten(), OnCarrotEaten);
 		Messenger.AddListener(EventDictionary.Instance.onPowerUpDone(), OnPowerUpDone);
 
-		Messenger.AddListener(EventDictionary.Instance.onLevelStartScreenDone(), OnPlaying);
+		//Messenger.AddListener(EventDictionary.Instance.onLevelStartScreenDone(), OnPlaying);
+		Messenger.AddListener<int>(EventDictionary.Instance.onLevelChanged(), OnLevelChanged);
+		Messenger.AddListener(EventDictionary.Instance.onLevelStartScreenDone(), OnLevelStartScreenDone);
+		Messenger.AddListener<Transform>(EventDictionary.Instance.onWolfKilled(), OnWolfKilled);
+	}
+
+
+	void OnLevelChanged(int level)
+	{//i want to add 1 wolf max spawn per 10 levels.
+
+		float tempAdd = 0;
+		tempAdd = (float)level / 5.0f;//10.0f
+		tempAdd =  (int)tempAdd;
+		_maxWolvesSpawnedAtOnce = (int)(4 + tempAdd);//was 5
+		_timeElapsed = 0.0f;
+		//wolfDenStates = DenStates.Playing;
+
+	}
+
+	void OnLevelStartScreenDone()
+	{
+		_timeElapsed = 0.0f;
+		wolfDenStates = DenStates.Playing;
+	}
+
+	void OnWolfKilled(Transform temp_Transform)
+	{
+		_currentWolvesSpawned--;
 	}
 
 	// Use this for initialization
@@ -72,14 +103,16 @@ public class WolfDen : MonoBehaviour
 	void OnGameOver()
 	{
 		wolfDenStates = DenStates.Idle;
-		_spawnRate = _resetSpawnRate;
+		//_spawnRate = _resetSpawnRate;
+		_currentWolvesSpawned = 0;
 		_timeElapsed = 0.0f;
 	}
 
 	void OnLevelEnding()
 	{
 		wolfDenStates = DenStates.Idle;
-		_spawnRate = _resetSpawnRate;
+		//_spawnRate = _resetSpawnRate;
+		_currentWolvesSpawned = 0;
 		_timeElapsed = 0.0f;
 
 	}
@@ -104,18 +137,34 @@ public class WolfDen : MonoBehaviour
 
 	void Playing()
 	{
+		_spawnRate = _currentWolvesSpawned + _addToSpawnRate;
+
 		_timeElapsed += Time.deltaTime;
 		
 		if(_timeElapsed >= _spawnRate)
 		{
-			_timeElapsed = 0f;
-			if(_spawnRate < _maxTimeBetweenSpawns)
+			if(_currentWolvesSpawned < _maxWolvesSpawnedAtOnce)
 			{
-			_spawnRate += _addToSpawnRate;
-			}
-			Instantiate(ChaseWolf, wolfSpawnTransform.position, Quaternion.identity);
+			_timeElapsed = 0f;
+
+				_currentWolvesSpawned++;
+
+
+				if(_currentWolvesSpawned % 3 == 0)
+				{
+					Instantiate(Direct_ChaseWolf, wolfSpawnTransform.position, Quaternion.identity);
+				}
+				else
+				{			
+					Instantiate(Random_ChaseWolf, wolfSpawnTransform.position, Quaternion.identity);
+				}
+
 			Messenger.Broadcast(EventDictionary.Instance.onWolfSpawned());
-			//Instantiate(ChaseWolf, myTransform, Quaternion.identity) as GameObject;
+			
+
+			
+
+			}
 			
 		}
 
@@ -125,8 +174,11 @@ public class WolfDen : MonoBehaviour
 
 	void OnPlayerKilled()
 	{
-		_spawnRate = _resetSpawnRate;
-		_timeElapsed = _spawnRate;
+		//_spawnRate = _resetSpawnRate;
+		//_timeElapsed = _spawnRate;
+
+		_currentWolvesSpawned = 0;
+		_timeElapsed = 0;
 
 
 	}

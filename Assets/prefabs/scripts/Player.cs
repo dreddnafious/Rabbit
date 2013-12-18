@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
 
 
 		Messenger.AddListener(EventDictionary.Instance.onCarrotEaten(), OnCarrotEaten);
-		Messenger.AddListener(EventDictionary.Instance.onWolfKilled(), OnWolfKilled);
+		Messenger.AddListener<Transform>(EventDictionary.Instance.onWolfKilled(), OnWolfKilled);
 
 
 	}
@@ -93,7 +93,7 @@ public class Player : MonoBehaviour
 
 	}
 
-	void OnWolfKilled()
+	void OnWolfKilled(Transform temp_Transform)
 	{
 		_score += 500;
 		Messenger.Broadcast<int>(EventDictionary.Instance.onScoreChanged(), _score);

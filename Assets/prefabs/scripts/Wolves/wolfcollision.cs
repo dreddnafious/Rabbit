@@ -4,8 +4,11 @@ using System.Collections;
 public class wolfcollision : MonoBehaviour
 {
 
+	Transform myTransform;
+
 
 	private wolfRandomMove randomMoveAI;
+	private WolfFollow     wolfFollowAI;
 
 	private enum Wolfstates
 	{
@@ -13,7 +16,15 @@ public class wolfcollision : MonoBehaviour
 		prey,
 	};
 
+	private enum WolfAIs
+	{
+		random,
+		follow,
+	};
+
+
 	Wolfstates _wolfState = Wolfstates.predator;
+	WolfAIs _wolfAI = WolfAIs.random;
 
 
 	void OnEnable()
@@ -40,8 +51,20 @@ public class wolfcollision : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+
+
+		myTransform = transform;
 		//grab a reference to the wolf AI
-		randomMoveAI = gameObject.GetComponent<wolfRandomMove>();
+
+		if(randomMoveAI = gameObject.GetComponent<wolfRandomMove>())
+		{
+			_wolfAI = WolfAIs.random;
+		}
+		if(wolfFollowAI = gameObject.GetComponent<WolfFollow>())
+		{
+			_wolfAI = WolfAIs.follow;
+		}
+
 
 	}
 	
@@ -69,7 +92,16 @@ public class wolfcollision : MonoBehaviour
 	void CleanUp()
 	{
 		//Messenger.Broadcast(EventDictionary.Instance.onWolfCleanUp());
+
+		switch(_wolfAI)
+		{
+		case WolfAIs.random:
 		randomMoveAI.CleanUp();
+			break;
+		case WolfAIs.follow:
+			wolfFollowAI.CleanUp();
+			break;
+		}
 		Debug.Log("wolf controller cleanup called");
 		Messenger.RemoveListener(EventDictionary.Instance.onPlayerKilled(), OnPlayerKilled);
 		Messenger.RemoveListener(EventDictionary.Instance.onLevelEnding(), OnLevelEnding);
@@ -115,7 +147,7 @@ public class wolfcollision : MonoBehaviour
 	void Prey()
 	{
 		Debug.Log("on wolf killed called");
-		Messenger.Broadcast(EventDictionary.Instance.onWolfKilled());
+		Messenger.Broadcast(EventDictionary.Instance.onWolfKilled(), myTransform);
 		
 		CleanUp();
 	}

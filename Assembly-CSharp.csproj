@@ -48,7 +48,9 @@
   <ItemGroup>
      <Compile Include="Assets\prefabs\scripts\EventDictionary.cs" />
      <Compile Include="Assets\prefabs\scripts\Player.cs" />
+     <Compile Include="Assets\prefabs\scripts\PowerUpFlash.cs" />
      <Compile Include="Assets\prefabs\scripts\Rabbit\rabbitmovement.cs" />
+     <Compile Include="Assets\prefabs\scripts\Systems\EffectsSystem.cs" />
      <Compile Include="Assets\prefabs\scripts\Systems\GameSystem.cs" />
      <Compile Include="Assets\prefabs\scripts\Systems\HUDSystem.cs" />
      <Compile Include="Assets\prefabs\scripts\Systems\InputSystem.cs" />
@@ -65,6 +67,12 @@
      <Compile Include="Assets\prefabs\scripts\map\PelletCollision.cs" />
      <Compile Include="Assets\prefabs\scripts\map\WolfDen.cs" />
      <Compile Include="Assets\prefabs\scripts\map\briarpatchcollision.cs" />
+     <Compile Include="Assets\prefabs\scripts\particlekiller.cs" />
+     <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-UnityScript-firstpass.unityproj">
+      <Project>{B004CAF2-6ADC-E88C-1AE6-7AC29121201A}</Project>      <Name>Assembly-UnityScript-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
